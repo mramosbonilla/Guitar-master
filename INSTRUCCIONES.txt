@@ -1,0 +1,9 @@
+GUITAR MASTER 18.0 PWA
+
+Sube TODOS los archivos de esta carpeta a un hosting HTTPS, por ejemplo tu sitio actual en Netlify.
+Comparte el enlace HTTPS a otros dispositivos.
+iPhone/iPad: Safari > Compartir > Añadir a pantalla de inicio > Abrir como app > Añadir.
+Android: Chrome > menu > Instalar aplicación / Añadir a pantalla de inicio.
+Abre la aplicación una vez con internet para que se guarden los recursos. Luego prueba en modo avión.
+La PWA no necesita Netlify para funcionar una vez guardada localmente, pero requiere un hosting HTTPS para instalarse en nuevos equipos y recibir actualizaciones.
+Cada equipo guarda sus datos localmente; no se sincronizan entre equipos.
