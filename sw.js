@@ -1,1 +1,23 @@
-const CACHE='guitar-master-v20-3-20261113';const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./guitarras-portada-191.webp'];self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()))});self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('guitar-master-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});self.addEventListener('fetch',event=>{if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;if(event.request.mode==='navigate'){event.respondWith(fetch(event.request).then(r=>{if(r.ok){const c=r.clone();caches.open(CACHE).then(cache=>cache.put('./index.html',c))}return r}).catch(()=>caches.match('./index.html')));return}event.respondWith(caches.match(event.request).then(hit=>hit||fetch(event.request).then(response=>{if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(event.request,copy))}return response})))})
+/* Guitar Master 20.4 — offline support, updates prefer the network. */
+const CACHE_NAME = 'guitar-master-v20-4-20261113';
+const CORE = ['./', './index.html', './icon-192.png', './icon-512.png'];
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', event => {
+  event.waitUntil(Promise.all([
+    caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('guitar-master-') && key !== CACHE_NAME).map(key => caches.delete(key)))),
+    self.clients.claim()
+  ]));
+});
+self.addEventListener('fetch', event => {
+  const request = event.request;
+  if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
+  event.respondWith(fetch(request).then(response => {
+    if (response.ok) {
+      const copy = response.clone();
+      event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(request, copy)));
+    }
+    return response;
+  }).catch(() => caches.match(request).then(cached => cached || (request.mode === 'navigate' ? caches.match('./index.html') : Response.error()))));
+});
