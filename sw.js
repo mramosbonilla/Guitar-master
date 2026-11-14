@@ -1,4 +1,4 @@
-const CACHE='mr-guitar-v22-3-20261114';
+const CACHE='mr-guitar-v22-4-20261114';
 const ASSETS=['./', './index.html', './manifest.webmanifest', './guitarras-portada-191.webp', './icon-192.png', './icon-512.png', './fundamentos/clasica-natural.webp', './fundamentos/clavijas-acustica.webp', './fundamentos/electrica-sunburst.webp', './fundamentos/electroacustica-negra.webp'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE&&(k.startsWith('guitar-master-')||k.startsWith('mr-guitar-'))).map(k=>caches.delete(k)))));self.clients.claim()});
