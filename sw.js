@@ -1,4 +1,4 @@
-const CACHE='guitar-master-v21-8-20261114';
-self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html'])));self.skipWaiting()});
+const CACHE='guitar-master-v22-0-20261114';
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html','./fundamentos/01-historia.svg','./fundamentos/02-anatomia.svg','./fundamentos/03-sonido.svg','./fundamentos/04-fisica.svg','./fundamentos/05-cuerdas.svg','./fundamentos/06-octavas.svg','./fundamentos/07-trastes.svg','./fundamentos/08-acordes.svg','./fundamentos/09-escalas.svg','./fundamentos/10-ritmo.svg','./fundamentos/11-cuidado.svg'])));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('guitar-master-')&&k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});
 self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{if(r.ok&&new URL(e.request.url).origin===self.location.origin){const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy))}return r}).catch(()=>caches.match(e.request)))});
